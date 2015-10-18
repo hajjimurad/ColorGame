@@ -3,8 +3,17 @@
  */
 
 define(function () {
-    function Board(size) {
+    function Board(size, initialData) {
         this.size = size;
+
+        if (initialData) {
+            if (initialData.constructor !== Array)
+                throw "invalid initial data";
+
+
+        } else {
+
+        }
     }
 
     return Board;
