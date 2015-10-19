@@ -6,19 +6,44 @@ requirejs(["Board"], function (Board) {
 
     QUnit.module("Board");
 
-    QUnit.test("constructor saves size", function (assert) {
-
-        var board = new Board(5);
-        assert.deepEqual(5, board.size);
+    QUnit.test("constructor not accepts empty initial data", function (assert) {
+        assert.throws(function () {
+            new Board();
+        });
     });
 
     QUnit.test("constructor check initial data", function (assert) {
 
         var initialData = 7;
         assert.throws(function () {
-            new Board(3, initialData)
+            new Board(initialData)
         });
     });
+
+    QUnit.test("constructor calculates dimension for correct dimension", function (assert) {
+
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+
+        assert.deepEqual(board.size, 3);
+    });
+
+    QUnit.test("constructor throws error on incorrect dimension", function (assert) {
+
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2, 1];
+
+        assert.throws(function () {
+            new Board(initialData);
+        });
+    });
+
 
     QUnit.test("constructor accepts correct data", function (assert) {
 
@@ -27,9 +52,30 @@ requirejs(["Board"], function (Board) {
             3, 2, 3,
             1, 2, 2];
 
-
-        var board = new Board(3, initialData);
+        var board = new Board(initialData);
         assert.ok(true);
+    });
+
+    QUnit.test("constructor saves initial data correctly", function (assert) {
+
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+        assert.propEqual(board.getData(), initialData);
+    });
+
+    QUnit.test("gets data by coords", function (assert) {
+
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+        assert.deepEqual(board.getByCoords(1,1), 2);
     });
 
 })
