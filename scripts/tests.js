@@ -44,7 +44,6 @@ requirejs(["Board"], function (Board) {
         });
     });
 
-
     QUnit.test("constructor accepts correct data", function (assert) {
 
         var initialData = [
@@ -75,7 +74,24 @@ requirejs(["Board"], function (Board) {
             1, 2, 2];
 
         var board = new Board(initialData);
-        assert.deepEqual(board.getByCoords(1,1), 2);
+        assert.deepEqual(board.getByCoords(1, 1), 2);
+    });
+
+    QUnit.test("get neighbours from all the sides", function (assert) {
+
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+        assert.deepEqual(board.getNeighboursPositions(1, 1),
+            [
+                {x: 0, y: 1},
+                {x: 1, y: 2},
+                {x: 2, y: 1},
+                {x: 1, y: 0}
+            ]);
     });
 
 })

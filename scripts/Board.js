@@ -9,6 +9,7 @@ define(function () {
     function Board(initialData) {
 
         var self = this;
+
         self.size = 0;
         var cells = [];
 
@@ -63,6 +64,33 @@ define(function () {
         self.getByCoords = function (i, j) {
             return cells[i][j];
         };
+
+        /**
+         * Returns neighbours of current position
+         */
+        self.getNeighboursPositions = function (i, j) {
+
+            var positionsRaw = [
+                {x: i - 1, y: j},
+                {x: i, y: j + 1},
+                {x: i + 1, y: j},
+                {x: i, y: j - 1}
+            ];
+
+            var resultPositions = [];
+            for (var i in positionsRaw) {
+                var position = positionsRaw[i];
+                if (position.x < 0 || position.x >= self.size)
+                    continue;
+
+                if (position.y < 0 || position.y >= self.size)
+                    continue;
+
+                resultPositions.push(position);
+            }
+
+            return resultPositions;
+        }
     }
 
     return Board;
