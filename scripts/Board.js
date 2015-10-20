@@ -90,7 +90,23 @@ define(["Cell"], function (Cell) {
             }
 
             return resultPositions;
-        }
+        };
+
+        self.findNeighboursOfTheSameColor = function (i, j) {
+
+            var currentCellColor = cells[i][j].color;
+            var resultNeighbours = [];
+
+            var neighbours = self.getNeighboursPositions(i, j);
+            for (var index in neighbours) {
+                var p = neighbours[index];
+                if (cells[p.x][p.y].color === currentCellColor) {
+                    resultNeighbours.push(p);
+                }
+            }
+
+            return resultNeighbours;
+        };
     }
 
     return Board;

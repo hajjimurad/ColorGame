@@ -96,10 +96,37 @@ requirejs(["Board", "Cell"], function (Board, Cell) {
 
     QUnit.module("Cell");
 
-    QUnit.test("cell saves color", function (assert) {
-
+    QUnit.test("color saved correctly", function (assert) {
         var cellColor = 3;
         var cell = new Cell(cellColor);
-        assert.deepEqual(cell.color, cellColor);
+        assert.equal(cell.color, cellColor);
     });
-})
+
+    QUnit.test("find neighbours of the same color, only itself", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+        var actualNeighbours = board.findNeighboursOfTheSameColor(0, 0);
+
+        assert.deepEqual(actualNeighbours, []);
+    });
+
+    QUnit.test("find neighbours of the same color, from center", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+        var actualNeighbours = board.findNeighboursOfTheSameColor(1, 1);
+
+        assert.deepEqual(actualNeighbours, [
+            {x: 0, y: 1},
+            {x: 2, y: 1},
+            {x: 2, y: 2}
+        ]);
+    });
+});
