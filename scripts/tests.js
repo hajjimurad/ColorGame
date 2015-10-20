@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board"], function (Board) {
+requirejs(["Board", "Cell"], function (Board, Cell) {
 
     QUnit.module("Board");
 
@@ -94,4 +94,12 @@ requirejs(["Board"], function (Board) {
             ]);
     });
 
+    QUnit.module("Cell");
+
+    QUnit.test("cell saves color", function (assert) {
+
+        var cellColor = 3;
+        var cell = new Cell(cellColor);
+        assert.deepEqual(cell.color, cellColor);
+    });
 })
