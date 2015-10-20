@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-define(function () {
+define(["Cell"], function (Cell) {
     /**
      * Board data
      */
@@ -20,7 +20,7 @@ define(function () {
             for (var i = 0; i < self.size; i++) {
                 cells[i] = new Array(self.size);
                 for (var j = 0; j < self.size; j++) {
-                    cells[i][j] = data[i * self.size + j];
+                    cells[i][j] = new Cell(data[i * self.size + j]);
                 }
             }
         }
@@ -47,21 +47,21 @@ define(function () {
         /**
          * Shows internal array data
          */
-        self.getData = function () {
-            var resCells = [];
+        self.getCellsColors = function () {
+            var resCellColors = [];
 
             for (var i = 0; i < self.size; i++) {
                 for (var j = 0; j < self.size; j++) {
-                    resCells[i * self.size + j] = cells[i][j];
+                    resCellColors[i * self.size + j] = cells[i][j].color;
                 }
             }
-            return resCells;
+            return resCellColors;
         };
 
         /**
          * Returns data by coords
          */
-        self.getByCoords = function (i, j) {
+        self.getCellByCoords = function (i, j) {
             return cells[i][j];
         };
 

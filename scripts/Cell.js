@@ -3,8 +3,6 @@
  */
 
 define(function () {
-
-
     /**
      * Cell container
      */

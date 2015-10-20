@@ -51,7 +51,7 @@ requirejs(["Board", "Cell"], function (Board, Cell) {
             3, 2, 3,
             1, 2, 2];
 
-        var board = new Board(initialData);
+        new Board(initialData);
         assert.ok(true);
     });
 
@@ -63,7 +63,7 @@ requirejs(["Board", "Cell"], function (Board, Cell) {
             1, 2, 2];
 
         var board = new Board(initialData);
-        assert.propEqual(board.getData(), initialData);
+        assert.propEqual(board.getCellsColors(), initialData);
     });
 
     QUnit.test("gets data by coords", function (assert) {
@@ -74,7 +74,7 @@ requirejs(["Board", "Cell"], function (Board, Cell) {
             1, 2, 2];
 
         var board = new Board(initialData);
-        assert.deepEqual(board.getByCoords(1, 1), 2);
+        assert.deepEqual(board.getCellByCoords(1, 1).color, 2);
     });
 
     QUnit.test("get neighbours from all the sides", function (assert) {
