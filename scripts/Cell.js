@@ -8,6 +8,15 @@ define(function () {
      */
     function Cell(color) {
         this.color = color;
+        this.mark = false;
+
+        this.setMark = function (mark) {
+            this.mark = mark;
+        };
+
+        this.getMark = function () {
+            return this.mark;
+        };
     }
 
     return Cell;

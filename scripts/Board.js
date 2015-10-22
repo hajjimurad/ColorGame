@@ -66,6 +66,17 @@ define(["Cell"], function (Cell) {
         };
 
         /**
+         * resets the state of all cells
+         */
+        self.resetMarks = function () {
+            for (var i = 0; i < self.size; i++)
+                for (var j = 0; j < self.size; j++) {
+                    var cell = this.getCellByCoords(i, j);
+                    cell.setMark(false);
+                }
+        }
+
+        /**
          * Returns neighbours of current position
          */
         self.getNeighboursPositions = function (i, j) {
@@ -92,20 +103,37 @@ define(["Cell"], function (Cell) {
             return resultPositions;
         };
 
-        self.findNeighboursOfTheSameColor = function (i, j) {
+        this.findNeighboursOfAnotherColor = function (i, j) {
+            var resultCoords = [];
+            getNeighboursOfAnotherColor(i, j, resultCoords);
+            self.resetMarks();
+
+            return resultCoords;
+        };
+
+        var getNeighboursOfAnotherColor = function (i, j, resultCollection) {
 
             var currentCellColor = cells[i][j].color;
-            var resultNeighbours = [];
 
             var neighbours = self.getNeighboursPositions(i, j);
             for (var index in neighbours) {
-                var p = neighbours[index];
-                if (cells[p.x][p.y].color === currentCellColor) {
-                    resultNeighbours.push(p);
-                }
-            }
 
-            return resultNeighbours;
+                var coords = neighbours[index];
+                var cell = cells[coords.x][coords.y];
+
+                if (cell.getMark())
+                    continue;
+
+                cell.setMark(true);
+
+                if (cell.color !== currentCellColor) {
+                    resultCollection.push(coords);
+                }
+                else {
+                    getNeighboursOfAnotherColor(coords.x, coords.y, resultCollection);
+                }
+
+            }
         };
     }
 

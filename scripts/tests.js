@@ -102,31 +102,87 @@ requirejs(["Board", "Cell"], function (Board, Cell) {
         assert.equal(cell.color, cellColor);
     });
 
-    QUnit.test("find neighbours of the same color, only itself", function (assert) {
+    QUnit.test("mark central cell as checked only", function (assert) {
+
+        var markedX = 1;
+        var markedY = 1;
+
         var initialData = [
             1, 2, 3,
             3, 2, 3,
             1, 2, 2];
 
         var board = new Board(initialData);
-        var actualNeighbours = board.findNeighboursOfTheSameColor(0, 0);
+        var cellToMark = board.getCellByCoords(markedX, markedY);
+        cellToMark.setMark(true);
 
-        assert.deepEqual(actualNeighbours, []);
+        assert.equal(board.getCellByCoords(0, 0).getMark(), false);
+        assert.equal(board.getCellByCoords(0, 1).getMark(), false);
+        assert.equal(board.getCellByCoords(0, 2).getMark(), false);
+        assert.equal(board.getCellByCoords(1, 0).getMark(), false);
+        assert.equal(board.getCellByCoords(markedX, markedY).getMark(), true);
+        assert.equal(board.getCellByCoords(1, 2).getMark(), false);
+        assert.equal(board.getCellByCoords(2, 0).getMark(), false);
+        assert.equal(board.getCellByCoords(2, 1).getMark(), false);
+        assert.equal(board.getCellByCoords(2, 2).getMark(), false);
     });
 
-    QUnit.test("find neighbours of the same color, from center", function (assert) {
+    QUnit.test("reset cell marks, all unmarked", function (assert) {
+
         var initialData = [
             1, 2, 3,
             3, 2, 3,
             1, 2, 2];
 
         var board = new Board(initialData);
-        var actualNeighbours = board.findNeighboursOfTheSameColor(1, 1);
+        var cellToMark = board.getCellByCoords(0, 0);
+        cellToMark.setMark(true);
 
-        assert.deepEqual(actualNeighbours, [
+        cellToMark = board.getCellByCoords(2, 2);
+        cellToMark.setMark(true);
+
+        board.resetMarks();
+
+        assert.equal(board.getCellByCoords(0, 0).getMark(), false);
+        assert.equal(board.getCellByCoords(0, 1).getMark(), false);
+        assert.equal(board.getCellByCoords(0, 2).getMark(), false);
+        assert.equal(board.getCellByCoords(1, 0).getMark(), false);
+        assert.equal(board.getCellByCoords(1, 1).getMark(), false);
+        assert.equal(board.getCellByCoords(1, 2).getMark(), false);
+        assert.equal(board.getCellByCoords(2, 0).getMark(), false);
+        assert.equal(board.getCellByCoords(2, 1).getMark(), false);
+        assert.equal(board.getCellByCoords(2, 2).getMark(), false);
+    });
+
+    QUnit.test("find neighbours of the another color, from initial corner", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+        var neighboursWithDifferencColor = board.findNeighboursOfAnotherColor(0, 0);
+
+        assert.deepEqual(neighboursWithDifferencColor, [
             {x: 0, y: 1},
-            {x: 2, y: 1},
-            {x: 2, y: 2}
-        ]);
+            {x: 1, y: 0}]);
+    });
+
+    QUnit.test("find neighbours of another color, from center", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+
+        var neighboursWithDifferencColor = board.findNeighboursOfAnotherColor(1, 1);
+
+        assert.deepEqual(neighboursWithDifferencColor, [
+            {x: 0, y: 2},
+            {x: 1, y: 2},
+            {x: 2, y: 0},
+            {x: 1, y: 0},
+            {x: 0, y: 0}]);
     });
 });
