@@ -20,4 +20,4 @@ define(function () {
     }
 
     return Cell;
-})
+});

@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board", "Cell"], function (Board, Cell) {
+requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySimple) {
 
     QUnit.module("Board");
 
@@ -184,5 +184,22 @@ requirejs(["Board", "Cell"], function (Board, Cell) {
             {x: 2, y: 0},
             {x: 1, y: 0},
             {x: 0, y: 0}]);
+    });
+
+    QUnit.module("SimpleStrategy");
+
+    QUnit.test("find color occurences", function (assert) {
+        var colors = [1, 2, 1, 3, 2, 1, 2, 4, 2];
+
+        var strategy = new StrategySimple();
+        var occurrences = strategy.getOccurrences(colors);
+
+        assert.equal(occurrences, [
+            {color: 1, occurrence: 3},
+            {color: 2, occurrence: 4},
+            {color: 3, occurrence: 1},
+            {color: 4, occurrence: 1}
+        ]);
+
     });
 });
