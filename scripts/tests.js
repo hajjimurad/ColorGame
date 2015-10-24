@@ -188,18 +188,34 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
     QUnit.module("SimpleStrategy");
 
-    QUnit.test("find color occurences", function (assert) {
+    QUnit.test("find neighbour cells color occurences", function (assert) {
         var colors = [1, 2, 1, 3, 2, 1, 2, 4, 2];
 
         var strategy = new StrategySimple();
-        var occurrences = strategy.getOccurrences(colors);
+        var occurrences = strategy.getNeighboursColorOccurrences(colors);
 
-        assert.equal(occurrences, [
+        assert.deepEqual([
             {color: 1, occurrence: 3},
             {color: 2, occurrence: 4},
             {color: 3, occurrence: 1},
             {color: 4, occurrence: 1}
-        ]);
+        ], occurrences);
 
     });
+
+    QUnit.test("find max color occurrence", function (assert) {
+        var colorOccurrences = [
+            {color: 1, occurrence: 3},
+            {color: 2, occurrence: 4},
+            {color: 3, occurrence: 1},
+            {color: 4, occurrence: 1}
+        ];
+
+        var strategy = new StrategySimple();
+        var colorWithMaxOccurrence = strategy.getMaxOccurrence(colorOccurrences);
+
+        assert.equal(colorWithMaxOccurrence, 2);
+
+    });
+
 });

@@ -14,12 +14,12 @@ define(function () {
             return null;
         };
 
-        this.getOccurrences = function (cellsColors) {
+        this.getNeighboursColorOccurrences = function (neighboursColors) {
 
             var occurrences = [];
 
-            for (var i = 0; i < cellsColors.length; i++) {
-                var color = cellsColors[i];
+            for (var i = 0; i < neighboursColors.length; i++) {
+                var color = neighboursColors[i];
 
                 var indexOfOccurrence = getIndexOfCalculatedColor(occurrences, color);
                 if (indexOfOccurrence === null) {
@@ -31,6 +31,22 @@ define(function () {
             }
             return occurrences;
         };
+
+        this.getMaxOccurrence = function(occurrences) {
+
+            var mostPopularColor = null;
+            var maxOccurrence = 0;
+            for(var i in occurrences) {
+
+                var colorOccurrence = occurrences[i];
+                if(maxOccurrence < colorOccurrence.occurrence) {
+                    mostPopularColor = colorOccurrence.color;
+                    maxOccurrence = colorOccurrence.occurrence;
+                }
+            }
+
+            return mostPopularColor;
+        }
     }
 
     return SimpleStrategy;
