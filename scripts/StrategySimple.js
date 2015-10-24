@@ -46,8 +46,8 @@ define(function () {
             }
 
             return mostPopularColor;
-        }
-    }
+        };
+            }
 
     return SimpleStrategy;
 })

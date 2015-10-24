@@ -186,6 +186,24 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
             {x: 0, y: 0}]);
     });
 
+    QUnit.test("change the color of the whole group", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+
+        var neighboursWithDifferencColor = board.findNeighboursOfAnotherColor(1, 1);
+
+        assert.deepEqual(neighboursWithDifferencColor, [
+            {x: 0, y: 2},
+            {x: 1, y: 2},
+            {x: 2, y: 0},
+            {x: 1, y: 0},
+            {x: 0, y: 0}]);
+    });
+
     QUnit.module("SimpleStrategy");
 
     QUnit.test("find neighbour cells color occurences", function (assert) {
@@ -216,6 +234,20 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
         assert.equal(colorWithMaxOccurrence, 2);
 
+    });
+
+    QUnit.test("find max color occurrence when several colors have the same number of occurrences", function (assert) {
+        var colorOccurrences = [
+            {color: 1, occurrence: 3},
+            {color: 2, occurrence: 2},
+            {color: 3, occurrence: 3},
+            {color: 4, occurrence: 1}
+        ];
+
+        var strategy = new StrategySimple();
+        var colorWithMaxOccurrence = strategy.getMaxOccurrence(colorOccurrences);
+
+        assert.equal(colorWithMaxOccurrence, 1);
     });
 
 });
