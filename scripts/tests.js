@@ -198,7 +198,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
 
     QUnit.module("Game");
 
-    QUnit.test("steps, according to simple strategy", function (assert) {
+    QUnit.test("3x3, steps according to simple strategy", function (assert) {
         var initialData = [
             1, 2, 3,
             3, 2, 3,
@@ -234,6 +234,75 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             1, 1, 1,
             1, 1, 1,
             1, 1, 1]);
+
+        stepResult = game.nextStep();
+        assert.notOk(stepResult);
+    });
+
+    QUnit.test("4x4 steps according to simple strategy", function (assert) {
+        var initialData = [
+            3, 2, 3, 1,
+            1, 2, 3, 2,
+            1, 2, 2, 1,
+            3, 3, 1, 2
+        ];
+
+        var initialCoords = {x: 0, y: 0};
+        var board = new Board(initialData);
+        var strategy = new StrategySimple(board, initialCoords);
+        var game = new Game(strategy);
+
+        var stepResult;
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            1, 2, 3, 1,
+            1, 2, 3, 2,
+            1, 2, 2, 1,
+            3, 3, 1, 2
+        ]);
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            2, 2, 3, 1,
+            2, 2, 3, 2,
+            2, 2, 2, 1,
+            3, 3, 1, 2
+        ]);
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            3, 3, 3, 1,
+            3, 3, 3, 2,
+            3, 3, 3, 1,
+            3, 3, 1, 2
+        ]);
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            1, 1, 1, 1,
+            1, 1, 1, 2,
+            1, 1, 1, 1,
+            1, 1, 1, 2
+        ]);
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            2, 2, 2, 2,
+            2, 2, 2, 2,
+            2, 2, 2, 2,
+            2, 2, 2, 2
+        ]);
 
         stepResult = game.nextStep();
         assert.notOk(stepResult);
