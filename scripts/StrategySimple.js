@@ -32,22 +32,27 @@ define(function () {
             return occurrences;
         };
 
-        this.getMaxOccurrence = function(occurrences) {
+        this.getMaxOccurrence = function (occurrences) {
 
             var mostPopularColor = null;
             var maxOccurrence = 0;
-            for(var i in occurrences) {
+            for (var i in occurrences) {
 
                 var colorOccurrence = occurrences[i];
-                if(maxOccurrence < colorOccurrence.occurrence) {
+                if (maxOccurrence < colorOccurrence.occurrence) {
                     mostPopularColor = colorOccurrence.color;
                     maxOccurrence = colorOccurrence.occurrence;
+                }
+                else if (maxOccurrence == colorOccurrence.occurrence) {
+                    if (colorOccurrence.color < mostPopularColor) {
+                        mostPopularColor = colorOccurrence.color;
+                    }
                 }
             }
 
             return mostPopularColor;
         };
-            }
+    }
 
     return SimpleStrategy;
 })

@@ -8,14 +8,14 @@ define(function () {
      */
     function Cell(color) {
         this.color = color;
-        this.mark = false;
+        var _mark = false;
 
         this.setMark = function (mark) {
-            this.mark = mark;
+            _mark = mark;
         };
 
         this.getMark = function () {
-            return this.mark;
+            return _mark;
         };
     }
 

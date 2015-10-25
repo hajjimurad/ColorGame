@@ -45,20 +45,6 @@ define(["Cell"], function (Cell) {
         }
 
         /**
-         * Shows internal array data
-         */
-        self.getCellsColors = function () {
-            var resCellColors = [];
-
-            for (var i = 0; i < self.size; i++) {
-                for (var j = 0; j < self.size; j++) {
-                    resCellColors[i * self.size + j] = cells[i][j].color;
-                }
-            }
-            return resCellColors;
-        };
-
-        /**
          * Returns data by coords
          */
         self.getCellByCoords = function (i, j) {
@@ -132,7 +118,6 @@ define(["Cell"], function (Cell) {
                 else {
                     getNeighboursOfAnotherColor(coords.x, coords.y, resultCollection);
                 }
-
             }
         };
     }
