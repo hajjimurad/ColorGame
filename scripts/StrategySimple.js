@@ -4,6 +4,9 @@
 
 define(function () {
 
+    /**
+     * Simple strategy, base on maximum occurrence of colors
+     */
     function SimpleStrategy() {
 
         var getIndexOfCalculatedColor = function (existentColors, colorToFind) {
@@ -14,6 +17,9 @@ define(function () {
             return null;
         };
 
+        /**
+         * Finds how many occurrences of every color
+         */
         this.getNeighboursColorOccurrences = function (neighboursColors) {
 
             var occurrences = [];
@@ -32,11 +38,14 @@ define(function () {
             return occurrences;
         };
 
+        /**
+         * Selects maximum occurrence of colors
+         */
         this.getMaxOccurrence = function (occurrences) {
 
             var mostPopularColor = null;
             var maxOccurrence = 0;
-            for (var i in occurrences) {
+            for (var i = 0; i < occurrences.length; i++) {
 
                 var colorOccurrence = occurrences[i];
                 if (maxOccurrence < colorOccurrence.occurrence) {
@@ -52,7 +61,16 @@ define(function () {
 
             return mostPopularColor;
         };
+
+        /**
+         *
+         * Chooses next color of the game
+         */
+        this.getNextColor = function(colorsToChoose) {
+            var occurrences = this.getNeighboursColorOccurrences(colorsToChoose);
+            return this.getMaxOccurrence(occurrences);
+        }
     }
 
     return SimpleStrategy;
-})
+});

@@ -23,7 +23,7 @@ define(["Cell"], function (Cell) {
                     cells[i][j] = new Cell(data[i * self.size + j]);
                 }
             }
-        }
+        };
 
         if (initialData) {
             if (initialData.constructor !== Array)
@@ -52,15 +52,24 @@ define(["Cell"], function (Cell) {
         };
 
         /**
-         * resets the state of all cells
+         * Runs any action for all the cells
          */
-        self.resetMarks = function () {
+        self.forEach = function (callback) {
             for (var i = 0; i < self.size; i++)
                 for (var j = 0; j < self.size; j++) {
                     var cell = this.getCellByCoords(i, j);
-                    cell.setMark(false);
+                    callback(cell, i, j);
                 }
-        }
+        };
+
+        /**
+         * Resets the state of all cells
+         */
+        self.resetMarks = function () {
+            self.forEach(function (cell) {
+                cell.setMark(false);
+            })
+        };
 
         /**
          * Returns neighbours of current position
@@ -75,24 +84,34 @@ define(["Cell"], function (Cell) {
             ];
 
             var resultPositions = [];
-            for (var i in positionsRaw) {
-                var position = positionsRaw[i];
+            positionsRaw.forEach(function (element) {
+                var position = element;
                 if (position.x < 0 || position.x >= self.size)
-                    continue;
+                    return;
 
                 if (position.y < 0 || position.y >= self.size)
-                    continue;
+                    return;
 
                 resultPositions.push(position);
-            }
+            });
 
             return resultPositions;
         };
 
-        this.findNeighboursOfAnotherColor = function (i, j) {
+        /**
+         * Searches for neighbours of another color recursively
+         */
+        self.findNeighboursOfAnotherColor = function (i, j) {
             var resultCoords = [];
+
+            cells[i][j].setMark(true);
+
             getNeighboursOfAnotherColor(i, j, resultCoords);
-            self.resetMarks();
+
+            resultCoords.forEach(function (item) {
+                var cell = self.getCellByCoords(item.x,item.y);
+                cell.setMark(false);
+            })
 
             return resultCoords;
         };
@@ -102,13 +121,12 @@ define(["Cell"], function (Cell) {
             var currentCellColor = cells[i][j].color;
 
             var neighbours = self.getNeighboursPositions(i, j);
-            for (var index in neighbours) {
+            neighbours.forEach(function (coords) {
 
-                var coords = neighbours[index];
                 var cell = cells[coords.x][coords.y];
 
                 if (cell.getMark())
-                    continue;
+                    return;
 
                 cell.setMark(true);
 
@@ -118,9 +136,23 @@ define(["Cell"], function (Cell) {
                 else {
                     getNeighboursOfAnotherColor(coords.x, coords.y, resultCollection);
                 }
-            }
+            });
         };
+
+        /**
+         * Marked cells
+         */
+        self.getMarkedCellsCoords = function () {
+            var markedCellsCoords = [];
+            this.forEach(function (cell, i, j) {
+                if (cell.getMark()) {
+                    markedCellsCoords.push({x: i, y: j});
+                }
+            });
+
+            return markedCellsCoords;
+        }
     }
 
     return Board;
-})
+});

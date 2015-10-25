@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySimple) {
+requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, StrategySimple, Game) {
 
     QUnit.module("Cell");
 
@@ -32,7 +32,7 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
     QUnit.test("constructor check initial data", function (assert) {
         var initialData = 7;
         assert.throws(function () {
-            new Board(initialData)
+            new Board(initialData);
         });
     });
 
@@ -143,6 +143,12 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
         assert.deepEqual(neighboursWithDifferencColor, [
             {x: 0, y: 1},
             {x: 1, y: 0}]);
+
+        assert.deepEqual(board.getMarkedCellsCoords(), [
+            {x: 0, y: 0}
+        ]);
+
+        assert.deepEqual()
     });
 
     QUnit.test("find neighbours of another color from center", function (assert) {
@@ -153,19 +159,21 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
         var board = new Board(initialData);
 
-        var neighboursWithDifferencColor = board.findNeighboursOfAnotherColor(1, 1);
+        var neighboursWithDifferentColor = board.findNeighboursOfAnotherColor(1, 1);
 
-        assert.deepEqual(neighboursWithDifferencColor, [
+        assert.deepEqual(neighboursWithDifferentColor, [
             {x: 0, y: 2},
+            {x: 0, y: 0},
             {x: 1, y: 2},
             {x: 2, y: 0},
-            {x: 1, y: 0},
-            {x: 0, y: 0}]);
+            {x: 1, y: 0}]);
+
+
     });
 
     QUnit.module("SimpleStrategy");
 
-    QUnit.test("find neighbour cells color occurences", function (assert) {
+    QUnit.test("find neighbour cells color occurrences", function (assert) {
         var colors = [1, 2, 1, 3, 2, 1, 2, 4, 2];
 
         var strategy = new StrategySimple();
@@ -209,4 +217,29 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
         assert.equal(colorWithMaxOccurrence, 1);
     });
 
+    QUnit.module("Game");
+
+    QUnit.test("first step, initial cell of another color", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var initialCoords = {x: 0, y: 0};
+
+        var board = new Board(initialData);
+        var strategy = new StrategySimple();
+        var game = new Game(board, strategy, initialCoords);
+        game.nextStep();
+
+        assert.equal(board.getCellByCoords(0, 0).color, 2);
+        assert.equal(board.getCellByCoords(0, 1).color, 2);
+        assert.equal(board.getCellByCoords(0, 2).color, 3);
+        assert.equal(board.getCellByCoords(1, 0).color, 3);
+        assert.equal(board.getCellByCoords(1, 1).color, 2);
+        assert.equal(board.getCellByCoords(1, 2).color, 3);
+        assert.equal(board.getCellByCoords(2, 0).color, 1);
+        assert.equal(board.getCellByCoords(2, 1).color, 2);
+        assert.equal(board.getCellByCoords(2, 2).color, 2);
+    });
 });
