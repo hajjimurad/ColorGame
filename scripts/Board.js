@@ -68,9 +68,20 @@ define(["Cell"], function (Cell) {
         self.resetMarks = function () {
             self.forEach(function (cell) {
                 cell.setMark(false);
-            })
+            });
         };
 
+        /**
+         * Returns colors of the cells
+         */
+        self.getCellsColors = function () {
+            var resultColors = [];
+            self.forEach(function (cell) {
+                resultColors.push(cell.color);
+            });
+
+            return resultColors;
+        }
         /**
          * Returns neighbours of current position
          */
@@ -101,22 +112,22 @@ define(["Cell"], function (Cell) {
         /**
          * Searches for neighbours of another color recursively
          */
-        self.findNeighboursOfAnotherColor = function (i, j) {
+        self.getDifferentNeighboursAndMarkArea = function (i, j) {
             var resultCoords = [];
 
             cells[i][j].setMark(true);
 
-            getNeighboursOfAnotherColor(i, j, resultCoords);
+            doGetDifferentCells(i, j, resultCoords);
 
             resultCoords.forEach(function (item) {
-                var cell = self.getCellByCoords(item.x,item.y);
+                var cell = self.getCellByCoords(item.x, item.y);
                 cell.setMark(false);
             })
 
             return resultCoords;
         };
 
-        var getNeighboursOfAnotherColor = function (i, j, resultCollection) {
+        var doGetDifferentCells = function (i, j, resultCollection) {
 
             var currentCellColor = cells[i][j].color;
 
@@ -134,7 +145,7 @@ define(["Cell"], function (Cell) {
                     resultCollection.push(coords);
                 }
                 else {
-                    getNeighboursOfAnotherColor(coords.x, coords.y, resultCollection);
+                    doGetDifferentCells(coords.x, coords.y, resultCollection);
                 }
             });
         };

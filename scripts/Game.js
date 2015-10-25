@@ -18,9 +18,9 @@ define(function () {
          * Next step of the game
          */
         self.nextStep = function () {
-            var neighboursCoords = _board.findNeighboursOfAnotherColor(_initialCoords.x, _initialCoords.y);
+            var neighboursCoords = _board.getDifferentNeighboursAndMarkArea(_initialCoords.x, _initialCoords.y);
 
-            if (!neighboursCoords)
+            if (!neighboursCoords || neighboursCoords.length === 0)
                 return false;
 
             var neighbourColors = [];
@@ -39,6 +39,8 @@ define(function () {
             });
 
             _board.resetMarks();
+
+            return true;
         };
     }
 

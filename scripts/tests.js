@@ -88,7 +88,18 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         assert.equal(board.getCellByCoords(2, 2).color, 2);
     });
 
-    QUnit.test("get neighbours from all the sides", function (assert) {
+    QUnit.test("colors of the board, the same as initial", function (assert) {
+        var initialData = [
+            1, 2, 3,
+            3, 2, 3,
+            1, 2, 2];
+
+        var board = new Board(initialData);
+
+        assert.deepEqual(board.getCellsColors(), initialData);
+    });
+
+    QUnit.test("get neighbours from all the cell sides", function (assert) {
         var initialData = [
             1, 2, 3,
             3, 2, 3,
@@ -138,7 +149,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             1, 2, 2];
 
         var board = new Board(initialData);
-        var neighboursWithDifferencColor = board.findNeighboursOfAnotherColor(0, 0);
+        var neighboursWithDifferencColor = board.getDifferentNeighboursAndMarkArea(0, 0);
 
         assert.deepEqual(neighboursWithDifferencColor, [
             {x: 0, y: 1},
@@ -159,7 +170,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
 
         var board = new Board(initialData);
 
-        var neighboursWithDifferentColor = board.findNeighboursOfAnotherColor(1, 1);
+        var neighboursWithDifferentColor = board.getDifferentNeighboursAndMarkArea(1, 1);
 
         assert.deepEqual(neighboursWithDifferentColor, [
             {x: 0, y: 2},
@@ -219,27 +230,44 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
 
     QUnit.module("Game");
 
-    QUnit.test("first step, initial cell of another color", function (assert) {
+    QUnit.test("steps, according to simple strategy", function (assert) {
         var initialData = [
             1, 2, 3,
             3, 2, 3,
             1, 2, 2];
 
         var initialCoords = {x: 0, y: 0};
-
         var board = new Board(initialData);
         var strategy = new StrategySimple();
         var game = new Game(board, strategy, initialCoords);
-        game.nextStep();
 
-        assert.equal(board.getCellByCoords(0, 0).color, 2);
-        assert.equal(board.getCellByCoords(0, 1).color, 2);
-        assert.equal(board.getCellByCoords(0, 2).color, 3);
-        assert.equal(board.getCellByCoords(1, 0).color, 3);
-        assert.equal(board.getCellByCoords(1, 1).color, 2);
-        assert.equal(board.getCellByCoords(1, 2).color, 3);
-        assert.equal(board.getCellByCoords(2, 0).color, 1);
-        assert.equal(board.getCellByCoords(2, 1).color, 2);
-        assert.equal(board.getCellByCoords(2, 2).color, 2);
+        var stepResult;
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            2, 2, 3,
+            3, 2, 3,
+            1, 2, 2]);
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            3, 3, 3,
+            3, 3, 3,
+            1, 3, 3]);
+
+        stepResult = game.nextStep();
+        assert.ok(stepResult);
+
+        assert.deepEqual(board.getCellsColors(), [
+            1, 1, 1,
+            1, 1, 1,
+            1, 1, 1]);
+
+        stepResult = game.nextStep();
+        assert.notOk(stepResult);
     });
 });
