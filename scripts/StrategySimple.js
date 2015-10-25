@@ -7,7 +7,39 @@ define(function () {
     /**
      * Simple strategy, base on maximum occurrence of colors
      */
-    function SimpleStrategy() {
+    function SimpleStrategy(board, initiaCoords) {
+        var _board = board;
+        var _initialCoords = initiaCoords;
+
+        this.nextStep = function () {
+            var neighboursCoords = _board.getDifferentNeighboursAndMarkArea(_initialCoords.x, _initialCoords.y);
+
+            if (!neighboursCoords || neighboursCoords.length === 0)
+                return false;
+
+            var neighbourColors = [];
+            neighboursCoords.forEach(function (item) {
+                var cell = _board.getCellByCoords(item.x, item.y);
+                neighbourColors.push(cell.getColor());
+            });
+
+            var nextColor = this.getNextColor(neighbourColors);
+
+            _board.forEach(function (cell) {
+                if (cell.getMark() && cell.getColor() !== nextColor) {
+                    cell.setColor(nextColor);
+                }
+            });
+
+            _board.resetMarkedCells();
+
+            return true;
+        };
+
+        this.getNextColor = function (colorsToChoose) {
+            var occurrences = this.getNeighboursColorOccurrences(colorsToChoose);
+            return this.getColorMaxOccurrence(occurrences);
+        }
 
         var getIndexOfCalculatedColor = function (existentColors, colorToFind) {
             for (var i = 0; i < existentColors.length; i++) {
@@ -17,9 +49,6 @@ define(function () {
             return null;
         };
 
-        /**
-         * Finds how many occurrences of every color
-         */
         this.getNeighboursColorOccurrences = function (neighboursColors) {
 
             var occurrences = [];
@@ -38,10 +67,7 @@ define(function () {
             return occurrences;
         };
 
-        /**
-         * Selects maximum occurrence of colors
-         */
-        this.getMaxOccurrence = function (occurrences) {
+        this.getColorMaxOccurrence = function (occurrences) {
 
             var mostPopularColor = null;
             var maxOccurrence = 0;
@@ -58,18 +84,8 @@ define(function () {
                     }
                 }
             }
-
             return mostPopularColor;
         };
-
-        /**
-         *
-         * Chooses next color of the game
-         */
-        this.getNextColor = function(colorsToChoose) {
-            var occurrences = this.getNeighboursColorOccurrences(colorsToChoose);
-            return this.getMaxOccurrence(occurrences);
-        }
     }
 
     return SimpleStrategy;

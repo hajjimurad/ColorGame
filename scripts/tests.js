@@ -99,7 +99,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         cellToMark = board.getCellByCoords(2, 2);
         cellToMark.setMark(true);
 
-        board.resetMarks();
+        board.resetMarkedCells();
 
         assert.equal(board.getCellByCoords(0, 0).getMark(), false);
         assert.equal(board.getCellByCoords(0, 1).getMark(), false);
@@ -177,7 +177,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         ];
 
         var strategy = new StrategySimple();
-        var colorWithMaxOccurrence = strategy.getMaxOccurrence(colorOccurrences);
+        var colorWithMaxOccurrence = strategy.getColorMaxOccurrence(colorOccurrences);
 
         assert.equal(colorWithMaxOccurrence, 2);
     });
@@ -191,7 +191,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         ];
 
         var strategy = new StrategySimple();
-        var colorWithMaxOccurrence = strategy.getMaxOccurrence(colorOccurrences);
+        var colorWithMaxOccurrence = strategy.getColorMaxOccurrence(colorOccurrences);
 
         assert.equal(colorWithMaxOccurrence, 1);
     });
@@ -206,8 +206,8 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = new StrategySimple();
-        var game = new Game(board, strategy, initialCoords);
+        var strategy = new StrategySimple(board, initialCoords);
+        var game = new Game(strategy);
 
         var stepResult;
 

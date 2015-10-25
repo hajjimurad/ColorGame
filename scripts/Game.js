@@ -4,43 +4,12 @@
 
 define(function () {
 
-    /**
-     * Game itself
-     */
-    function Game(board, strategy, initialCoords) {
+    function Game(strategy) {
 
-        var self = this;
-
-        var _board = board;
         var _strategy = strategy;
-        var _initialCoords = initialCoords;
 
-        /**
-         * Next step of the game
-         */
-        self.nextStep = function () {
-            var neighboursCoords = _board.getDifferentNeighboursAndMarkArea(_initialCoords.x, _initialCoords.y);
-
-            if (!neighboursCoords || neighboursCoords.length === 0)
-                return false;
-
-            var neighbourColors = [];
-            neighboursCoords.forEach(function (item) {
-                var cell = _board.getCellByCoords(item.x, item.y);
-                neighbourColors.push(cell.getColor());
-            })
-
-            var nextColor = _strategy.getNextColor(neighbourColors);
-
-            _board.forEach(function (cell, i, j) {
-                if (cell.getMark() && cell.getColor() !== nextColor) {
-                    cell.setColor(nextColor);
-                }
-            });
-
-            _board.resetMarks();
-
-            return true;
+        this.nextStep = function () {
+            return _strategy.nextStep();
         };
     }
 

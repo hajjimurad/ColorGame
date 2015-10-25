@@ -4,9 +4,6 @@
 
 define(["Cell"], function (Cell) {
 
-    /**
-     * Board data
-     */
     function Board(initialData) {
 
         var self = this;
@@ -14,9 +11,6 @@ define(["Cell"], function (Cell) {
         self.size = 0;
         var cells = [];
 
-        /**
-         * Initializes 2 dimension array
-         */
         var init = function (data) {
             for (var i = 0; i < self.size; i++) {
                 cells[i] = new Array(self.size);
@@ -45,16 +39,10 @@ define(["Cell"], function (Cell) {
             throw "no initial data";
         }
 
-        /**
-         * Returns data by coords
-         */
         self.getCellByCoords = function (i, j) {
             return cells[i][j];
         };
 
-        /**
-         * Runs any action for all the cells
-         */
         self.forEach = function (callback) {
             for (var i = 0; i < self.size; i++)
                 for (var j = 0; j < self.size; j++) {
@@ -63,18 +51,6 @@ define(["Cell"], function (Cell) {
                 }
         };
 
-        /**
-         * Resets the state of all cells
-         */
-        self.resetMarks = function () {
-            self.forEach(function (cell) {
-                cell.setMark(false);
-            });
-        };
-
-        /**
-         * Returns colors of the cells
-         */
         self.getCellsColors = function () {
             var resultColors = [];
             self.forEach(function (cell) {
@@ -84,9 +60,6 @@ define(["Cell"], function (Cell) {
             return resultColors;
         };
 
-        /**
-         * Marked cells
-         */
         self.getMarkedCellsCoords = function () {
             var markedCellsCoords = [];
             this.forEach(function (cell, i, j) {
@@ -98,9 +71,12 @@ define(["Cell"], function (Cell) {
             return markedCellsCoords;
         };
 
-        /**
-         * Returns neighbours of current position
-         */
+        self.resetMarkedCells = function () {
+            self.forEach(function (cell) {
+                cell.setMark(false);
+            });
+        };
+
         self.getNeighboursPositions = function (i, j) {
 
             var positionsRaw = [
@@ -125,9 +101,6 @@ define(["Cell"], function (Cell) {
             return resultPositions;
         };
 
-        /**
-         * Searches for neighbours of another color recursively
-         */
         self.getDifferentNeighboursAndMarkArea = function (i, j) {
             var resultCoords = [];
 
