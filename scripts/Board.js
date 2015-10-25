@@ -3,6 +3,7 @@
  */
 
 define(["Cell"], function (Cell) {
+
     /**
      * Board data
      */
@@ -77,11 +78,26 @@ define(["Cell"], function (Cell) {
         self.getCellsColors = function () {
             var resultColors = [];
             self.forEach(function (cell) {
-                resultColors.push(cell.color);
+                resultColors.push(cell.getColor());
             });
 
             return resultColors;
-        }
+        };
+
+        /**
+         * Marked cells
+         */
+        self.getMarkedCellsCoords = function () {
+            var markedCellsCoords = [];
+            this.forEach(function (cell, i, j) {
+                if (cell.getMark()) {
+                    markedCellsCoords.push({x: i, y: j});
+                }
+            });
+
+            return markedCellsCoords;
+        };
+
         /**
          * Returns neighbours of current position
          */
@@ -122,14 +138,14 @@ define(["Cell"], function (Cell) {
             resultCoords.forEach(function (item) {
                 var cell = self.getCellByCoords(item.x, item.y);
                 cell.setMark(false);
-            })
+            });
 
             return resultCoords;
         };
 
         var doGetDifferentCells = function (i, j, resultCollection) {
 
-            var currentCellColor = cells[i][j].color;
+            var currentCellColor = cells[i][j].getColor();
 
             var neighbours = self.getNeighboursPositions(i, j);
             neighbours.forEach(function (coords) {
@@ -141,7 +157,7 @@ define(["Cell"], function (Cell) {
 
                 cell.setMark(true);
 
-                if (cell.color !== currentCellColor) {
+                if (cell.getColor() !== currentCellColor) {
                     resultCollection.push(coords);
                 }
                 else {
@@ -149,20 +165,6 @@ define(["Cell"], function (Cell) {
                 }
             });
         };
-
-        /**
-         * Marked cells
-         */
-        self.getMarkedCellsCoords = function () {
-            var markedCellsCoords = [];
-            this.forEach(function (cell, i, j) {
-                if (cell.getMark()) {
-                    markedCellsCoords.push({x: i, y: j});
-                }
-            });
-
-            return markedCellsCoords;
-        }
     }
 
     return Board;

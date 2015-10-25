@@ -3,11 +3,13 @@
  */
 
 define(function () {
+
     /**
      * Cell container
      */
     function Cell(color) {
-        this.color = color;
+
+        var _color;
         var _mark = false;
 
         this.setMark = function (mark) {
@@ -17,6 +19,16 @@ define(function () {
         this.getMark = function () {
             return _mark;
         };
+
+        this.setColor = function (color) {
+            _color = color
+        };
+
+        this.getColor = function () {
+            return _color;
+        };
+
+        this.setColor(color);
     }
 
     return Cell;

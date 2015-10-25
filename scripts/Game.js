@@ -3,6 +3,7 @@
  */
 
 define(function () {
+
     /**
      * Game itself
      */
@@ -26,15 +27,14 @@ define(function () {
             var neighbourColors = [];
             neighboursCoords.forEach(function (item) {
                 var cell = _board.getCellByCoords(item.x, item.y);
-                neighbourColors.push(cell.color);
+                neighbourColors.push(cell.getColor());
             })
 
             var nextColor = _strategy.getNextColor(neighbourColors);
 
             _board.forEach(function (cell, i, j) {
-                if (cell.getMark() && cell.color !== nextColor) {
-                    cell.color = nextColor;
-                    console.log(i + " " + j);
+                if (cell.getMark() && cell.getColor() !== nextColor) {
+                    cell.setColor(nextColor);
                 }
             });
 
