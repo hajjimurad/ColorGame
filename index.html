@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ColorGame</title>
+    <script src="//knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+    <script data-main="scripts/main" src="//requirejs.org/docs/release/2.1.20/comments/require.js"></script>
+    <style>
+        body {
+            font-family: Tahoma;
+            background-color: #AAAAAA;
+        }
+
+        .board {
+            width: 320px;
+            margin: 0 auto;
+            font-size: 0;
+        }
+
+        .board .cell {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            border: solid 1px #DDD;
+            font-size: 80px;
+            text-align: center;
+            vertical-align: bottom;
+            line-height: 80px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Test results:</h1>
+
+<div class="board" data-bind="foreach: getCells()">
+    <div class="cell" data-bind="text: getColor(), click: $parent.onCellClick">
+    </div>
+</div>
+</div>
+</body>
+</html>

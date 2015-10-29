@@ -51,6 +51,15 @@ define(["Cell"], function (Cell) {
                 }
         };
 
+        self.getCells = function () {
+            var result = [];
+            self.forEach(function (cell) {
+                result.push(cell);
+            });
+
+            return result;
+        };
+
         self.getCellsColors = function () {
             var resultColors = [];
             self.forEach(function (cell) {
