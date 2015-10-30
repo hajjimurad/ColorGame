@@ -14,7 +14,6 @@
         }
 
         .board {
-            width: 320px;
             margin: 0 auto;
             font-size: 0;
         }
@@ -32,11 +31,11 @@
 
     </style>
 </head>
-<body>
-<h1>Test results:</h1>
+<body data-bind="click: onCellClick">
+<h1>Game</h1>
 
 <div class="board" data-bind="foreach: getCells()">
-    <div class="cell" data-bind="text: getColor(), click: $parent.onCellClick">
+    <div class="cell" data-bind="text: getColor()">
     </div>
 </div>
 </div>

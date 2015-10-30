@@ -2,12 +2,10 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["lib/knockout","Board", "Cell", "StrategySimple", "Game"], function (ko, Board, Cell, StrategySimple, Game) {
-    var initialData = [
-        1, 2, 3,
-        3, 2, 3,
-        1, 2, 2];
-    var board = new Board(initialData);
+requirejs(["lib/knockout","Board", "Cell", "StrategySimple", "Game", "BoardGenerator"], function (ko, Board, Cell, StrategySimple, Game, BoardGenerator) {
+
+    var boardGenerator = new BoardGenerator(10,30);
+    var board = boardGenerator.generate();
 
     var strategy = new StrategySimple(board, {x: 0, y: 0});
     var game = new Game(strategy);
