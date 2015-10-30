@@ -4,9 +4,6 @@
 
 define(function () {
 
-    /**
-     * Simple strategy, base on maximum occurrence of colors
-     */
     function SimpleStrategy(board, initiaCoords) {
         var _board = board;
         var _initialCoords = initiaCoords;

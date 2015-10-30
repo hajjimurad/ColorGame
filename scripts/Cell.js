@@ -4,28 +4,25 @@
 
 define(function () {
 
-    /**
-     * Cell container
-     */
     function Cell(color) {
 
-        var _color;
-        var _mark = false;
+        var _color = ko.observable();
+        var _mark = ko.observable(false);
 
         this.setMark = function (mark) {
-            _mark = mark;
+            _mark(mark);
         };
 
         this.getMark = function () {
-            return _mark;
+            return _mark();
         };
 
         this.setColor = function (color) {
-            _color = color
+            _color(color);
         };
 
         this.getColor = function () {
-            return _color;
+            return _color();
         };
 
         this.setColor(color);

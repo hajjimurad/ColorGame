@@ -15,11 +15,11 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
     var viewModel = {
         getCells: function () {
             return board.getCells();
+        },
+        onCellClick: function () {
+            game.nextStep();
         }
     };
-    viewModel.onCellClick = function () {
-        alert(game.nextStep());
-    }
 
     ko.applyBindings(viewModel);
 
