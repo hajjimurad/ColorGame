@@ -2,7 +2,7 @@
  * Created by murad on 20/10/15.
  */
 
-define(function () {
+define(["lib/knockout"],function (ko) {
 
     function Cell(color) {
 

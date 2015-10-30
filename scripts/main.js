@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, StrategySimple, Game) {
+requirejs(["lib/knockout","Board", "Cell", "StrategySimple", "Game"], function (ko, Board, Cell, StrategySimple, Game) {
     var initialData = [
         1, 2, 3,
         3, 2, 3,
