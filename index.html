@@ -12,9 +12,8 @@
         }
 
         .board {
-            margin: 0 auto;
             font-size: 0;
-            width: 50%;
+            width: 80%;
         }
 
         .board .cell {
@@ -33,11 +32,11 @@
 <body data-bind="click: onCellClick">
 <h1>Game</h1>
 
-<div class="board" data-bind="foreach: getCells()">
+<div class="board" data-bind="style: { width: (getSize() * 102 + 'px')}, foreach: getCells()">
     <!-- ko if: ($index() % $parent.getSize()) === 0-->
     <br>
     <!-- /ko -->
-    <div class="cell" data-bind="text: getColor()">
+    <div class="cell" data-bind="style: { backgroundColor: getColorStyle() }">
     </div>
 
 </div>

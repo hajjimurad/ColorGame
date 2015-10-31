@@ -4,7 +4,7 @@
 
 requirejs(["lib/knockout", "Board", "Cell", "StrategySimple", "Game", "BoardGenerator"], function (ko, Board, Cell, StrategySimple, Game, BoardGenerator) {
 
-    var boardGenerator = new BoardGenerator(4, 5);
+    var boardGenerator = new BoardGenerator(10, 10);
     var board = boardGenerator.generate();
 
     var strategy = new StrategySimple(board, {x: 0, y: 0});
