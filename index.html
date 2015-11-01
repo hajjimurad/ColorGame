@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>ColorGame</title>
 
-    <script data-main="scripts/main" src="//requirejs.org/docs/release/2.1.20/comments/require.js"></script>
+    <script data-main="scripts/GameViewModel" src="//requirejs.org/docs/release/2.1.20/comments/require.js"></script>
     <style>
         body {
             font-family: Tahoma;
@@ -51,7 +51,7 @@
     <!-- ko if: ($index() % $parent.getSize()) === 0-->
     <br>
     <!-- /ko -->
-    <div class="cell" data-bind="style: { backgroundColor: getColorStyle() }">
+    <div class="cell" data-bind="style: { backgroundColor: $data }">
     </div>
 
 </div>
