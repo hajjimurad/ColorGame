@@ -7,14 +7,14 @@ define(["lib/knockout"], function (ko) {
     function Cell(color) {
 
         var _color = ko.observable();
-        var _mark = ko.observable(false);
+        var _mark = false;
 
         this.setMark = function (mark) {
-            _mark(mark);
+            _mark = mark;
         };
 
         this.getMark = function () {
-            return _mark();
+            return _mark;
         };
 
         this.setColor = function (color) {

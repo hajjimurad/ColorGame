@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, StrategySimple, Game) {
+requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySimple) {
 
     QUnit.module("Cell");
 
@@ -196,8 +196,6 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         assert.equal(colorWithMaxOccurrence, 1);
     });
 
-    QUnit.module("Game");
-
     QUnit.test("3x3, steps according to simple strategy", function (assert) {
         var initialData = [
             1, 2, 3,
@@ -207,36 +205,40 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
         var strategy = new StrategySimple(board, initialCoords);
-        var game = new Game(strategy);
+        assert.equal(strategy.getStepNumber(), 0);
 
         var stepResult;
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
+        assert.equal(strategy.getStepNumber(), 1);
 
         assert.deepEqual(board.getCellsColors(), [
             2, 2, 3,
             3, 2, 3,
             1, 2, 2]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
+        assert.equal(strategy.getStepNumber(), 2);
 
         assert.deepEqual(board.getCellsColors(), [
             3, 3, 3,
             3, 3, 3,
             1, 3, 3]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
+        assert.equal(strategy.getStepNumber(), 3);
 
         assert.deepEqual(board.getCellsColors(), [
             1, 1, 1,
             1, 1, 1,
             1, 1, 1]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.notOk(stepResult);
+        assert.equal(strategy.getStepNumber(), 3);
     });
 
     QUnit.test("4x4 steps according to simple strategy", function (assert) {
@@ -250,11 +252,10 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
         var strategy = new StrategySimple(board, initialCoords);
-        var game = new Game(strategy);
 
         var stepResult;
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
 
         assert.deepEqual(board.getCellsColors(), [
@@ -264,7 +265,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             3, 3, 1, 2
         ]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
 
         assert.deepEqual(board.getCellsColors(), [
@@ -274,7 +275,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             3, 3, 1, 2
         ]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
 
         assert.deepEqual(board.getCellsColors(), [
@@ -284,7 +285,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             3, 3, 1, 2
         ]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
 
         assert.deepEqual(board.getCellsColors(), [
@@ -294,7 +295,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             1, 1, 1, 2
         ]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.ok(stepResult);
 
         assert.deepEqual(board.getCellsColors(), [
@@ -304,7 +305,7 @@ requirejs(["Board", "Cell", "StrategySimple", "Game"], function (Board, Cell, St
             2, 2, 2, 2
         ]);
 
-        stepResult = game.nextStep();
+        stepResult = strategy.nextStep();
         assert.notOk(stepResult);
     });
 });

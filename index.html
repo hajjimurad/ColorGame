@@ -20,17 +20,32 @@
             width: 100px;
             height: 100px;
             display: inline-block;
-            border: solid 1px #DDD;
+            border: solid 1px ButtonShadow;
             font-size: 80px;
             text-align: center;
             vertical-align: bottom;
             line-height: 80px;
         }
 
+        .panel {
+            padding: 10px 0;
+        }
+
+        .panel button {
+            width: 100px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+
     </style>
 </head>
-<body data-bind="click: onCellClick">
-<h1>Game</h1>
+<body>
+<h1>Color game, step #<span data-bind="text: getStepNumber()"></span></h1>
+
+<div class="panel">
+    <button data-bind="click: nextStep">next</button>
+</div>
 
 <div class="board" data-bind="style: { width: (getSize() * 102 + 'px')}, foreach: getCells()">
     <!-- ko if: ($index() % $parent.getSize()) === 0-->
@@ -40,6 +55,6 @@
     </div>
 
 </div>
-</div>
+
 </body>
 </html>

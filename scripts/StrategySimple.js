@@ -2,12 +2,16 @@
  * Created by murad on 22/10/15.
  */
 
-define(function () {
+define(["lib/knockout"], function (ko) {
 
     function SimpleStrategy(board, initiaCoords) {
         var _board = board;
         var _initialCoords = initiaCoords;
+        var stepNumber = 0;
 
+        this.getStepNumber = function () {
+            return stepNumber;
+        }
         this.nextStep = function () {
             var neighboursCoords = _board.getDifferentNeighboursAndMarkArea(_initialCoords.x, _initialCoords.y);
 
@@ -29,6 +33,8 @@ define(function () {
             });
 
             _board.resetMarkedCells();
+
+            stepNumber++;
 
             return true;
         };
