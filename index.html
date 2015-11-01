@@ -12,8 +12,8 @@
         }
 
         .board {
-            font-size: 0;
             width: 80%;
+            font-size: 0;
         }
 
         .board .cell {
@@ -21,10 +21,9 @@
             height: 100px;
             display: inline-block;
             border: solid 1px ButtonShadow;
-            font-size: 80px;
-            text-align: center;
-            vertical-align: bottom;
-            line-height: 80px;
+            font-size: 10px;
+            text-align: left;
+            color: #FFF;
         }
 
         .panel {
@@ -41,19 +40,15 @@
     </style>
 </head>
 <body>
-<h1>Color game, step #<span data-bind="text: getStepNumber()"></span></h1>
+<h1>Color game, step #<span data-bind="text: stepNumber"></span></h1>
 
 <div class="panel">
     <button data-bind="click: nextStep">next</button>
 </div>
 
-<div class="board" data-bind="style: { width: (getSize() * 102 + 'px')}, foreach: getCells()">
-    <!-- ko if: ($index() % $parent.getSize()) === 0-->
-    <br>
-    <!-- /ko -->
-    <div class="cell" data-bind="style: { backgroundColor: $data }">
+<div class="board" data-bind="style: { width: (boardSize() * 102 + 'px')}, foreach: cellsColors">
+    <div class="cell" data-bind="style: { backgroundColor: $data.color }, text: $data.colorIndex">
     </div>
-
 </div>
 
 </body>

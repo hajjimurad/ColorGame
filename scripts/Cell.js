@@ -2,11 +2,11 @@
  * Created by murad on 20/10/15.
  */
 
-define(["lib/knockout"], function (ko) {
+define(function () {
 
-    function Cell(color) {
+    function Cell(colorIndex) {
 
-        var _color = ko.observable();
+        var _colorIndex;
         var _mark = false;
 
         this.setMark = function (mark) {
@@ -17,17 +17,16 @@ define(["lib/knockout"], function (ko) {
             return _mark;
         };
 
-        this.setColor = function (color) {
-            _color(color);
+        this.setColor = function (colorIndex) {
+            _colorIndex = colorIndex;
         };
 
         this.getColor = function () {
-            return _color();
+            return _colorIndex;
         };
 
-        this.setColor(color);
+        this.setColor(colorIndex);
     }
-
 
     return Cell;
 });

@@ -2,7 +2,7 @@
  * Created by murad on 22/10/15.
  */
 
-define(["lib/knockout"], function (ko) {
+define(function () {
 
     function SimpleStrategy(board, initiaCoords) {
         var _board = board;

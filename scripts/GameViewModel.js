@@ -4,6 +4,24 @@
 
 requirejs(["lib/knockout", "Board", "Cell", "StrategySimple", "BoardGenerator"], function (ko, Board, Cell, StrategySimple, BoardGenerator) {
 
+    var boardGenerator = new BoardGenerator(10, 10);
+    var board = boardGenerator.generate();
+    var cells = board.getCells();
+    var strategy = new StrategySimple(board, {x: 0, y: 0});
+
+    var self = this;
+
+    self.stepNumber = ko.observable(0);
+    self.cellsColors = [];
+    self.boardSize = ko.observable(board.size);
+
+    self.nextStep = function () {
+        strategy.nextStep();
+        self.stepNumber(strategy.getStepNumber());
+
+        updateViewModelColors();
+    };
+
     var availableCellsColors = [
         "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000",
         "800000", "008000", "000080", "808000", "800080", "008080", "808080",
@@ -15,52 +33,32 @@ requirejs(["lib/knockout", "Board", "Cell", "StrategySimple", "BoardGenerator"],
         "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"
     ];
 
-    var getColorStyle = function (colorIndex) {
+    var getCellColorStyle = function (colorIndex) {
         return "#" + availableCellsColors[colorIndex];
     };
 
-    var updateViewModelColors = function () {
-        for (var index in cellsColors) {
-            var cellDestination = cellsColors[index];
-            var cellSource = cells[index];
-            cellDestination(getColorStyle(cellSource.getColor()));
+    var initViewModelColors = function () {
+        var cellCount = cells.length;
+        for (var i = 0; i < cellCount; i++) {
+            cellsColors.push({
+                color: ko.observable(),
+                colorIndex: ko.observable()
+            });
         }
     };
 
-    var boardGenerator = new BoardGenerator(10, 10);
-    var board = boardGenerator.generate();
+    var updateViewModelColors = function () {
+        for (var index in self.cellsColors) {
+            var cellDestination = self.cellsColors[index];
+            var cellSource = cells[index];
 
-    var strategy = new StrategySimple(board, {x: 0, y: 0});
-    var stepNumber = ko.observable(0);
+            cellDestination.color(getCellColorStyle(cellSource.getColor()));
+            cellDestination.colorIndex(cellSource.getColor());
+        }
+    };
 
-    var cellsColors = [];
-    var cells = board.getCells();
-    var cellCount = cells.length;
-    for (var i = 0; i < cellCount; i++) {
-        cellsColors.push(ko.observable());
-    }
-    
+    initViewModelColors();
     updateViewModelColors();
 
-
-    var viewModel = {
-        getCells: function () {
-            return cellsColors;
-        },
-        nextStep: function () {
-            strategy.nextStep();
-            stepNumber(strategy.getStepNumber());
-
-            updateViewModelColors();
-        },
-        getSize: function () {
-            return board.size;
-        },
-        getStepNumber: function () {
-            return stepNumber();
-        }
-    };
-
-    ko.applyBindings(viewModel);
-
+    ko.applyBindings(self);
 });
