@@ -204,7 +204,8 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = new StrategySimple(board, initialCoords);
+        var strategy = new StrategySimple();
+        strategy.init(board,initialCoords);
         assert.equal(strategy.getStepNumber(), 0);
 
         var stepResult;
@@ -251,7 +252,8 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = new StrategySimple(board, initialCoords);
+        var strategy = new StrategySimple();
+        strategy.init(board,initialCoords);
 
         var stepResult;
 

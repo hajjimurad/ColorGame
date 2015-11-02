@@ -21,7 +21,8 @@ requirejs(["lib/knockout", "Board", "Cell", "StrategySimple", "BoardGenerator"],
         var boardGenerator = new BoardGenerator(10, 10);
         var board = boardGenerator.generate();
         var cells = board.getCells();
-        var strategy = new StrategySimple(board, {x: 0, y: 0});
+        var strategy = new StrategySimple();
+        strategy.init(board, {x: 0, y: 0});
 
         self.stepNumber = ko.observable(0);
         self.cellsColors = [];
