@@ -4,7 +4,16 @@
 
 define(["StrategySimple"], function (StrategySimple) {
 
-    StrategyFactory.createStratgy = function (board, initialCoords) {
-        return new StrategySimple(board, initialCoords);
+    function StrategyFactory() {
+
     }
-}
+
+    StrategyFactory.createStratgy = function (board, initialCoords) {
+        var resultStrategy = new StrategySimple();
+        resultStrategy.init(board, initialCoords);
+
+        return resultStrategy;
+    };
+
+    return StrategyFactory;
+});

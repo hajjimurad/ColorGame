@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["lib/knockout", "Board", "Cell", "StrategySimple", "BoardGenerator"], function (ko, Board, Cell, StrategySimple, BoardGenerator) {
+requirejs(["lib/knockout", "Board", "Cell", "StrategyFactory", "BoardGenerator"], function (ko, Board, Cell, StrategyFactory, BoardGenerator) {
 
     GameViewModel.availableCellsColors = [
         "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000",
@@ -21,8 +21,7 @@ requirejs(["lib/knockout", "Board", "Cell", "StrategySimple", "BoardGenerator"],
         var boardGenerator = new BoardGenerator(10, 10);
         var board = boardGenerator.generate();
         var cells = board.getCells();
-        var strategy = new StrategySimple();
-        strategy.init(board, {x: 0, y: 0});
+        var strategy = StrategyFactory.createStratgy(board, {x: 0, y: 0});
 
         self.stepNumber = ko.observable(0);
         self.cellsColors = [];

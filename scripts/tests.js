@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySimple) {
+requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple"], function (Board, Cell, StrategyFactory, StrategySimple) {
 
     QUnit.module("Cell");
 
@@ -204,8 +204,8 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = new StrategySimple();
-        strategy.init(board,initialCoords);
+        var strategy = StrategyFactory.createStratgy(board, initialCoords);
+
         assert.equal(strategy.getStepNumber(), 0);
 
         var stepResult;
@@ -252,8 +252,7 @@ requirejs(["Board", "Cell", "StrategySimple"], function (Board, Cell, StrategySi
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = new StrategySimple();
-        strategy.init(board,initialCoords);
+        var strategy = StrategyFactory.createStratgy(board, initialCoords);
 
         var stepResult;
 
