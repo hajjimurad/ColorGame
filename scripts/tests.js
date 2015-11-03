@@ -2,7 +2,7 @@
  * Created by murad on 18/10/15.
  */
 
-requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple"], function (Board, Cell, StrategyFactory, StrategySimple) {
+requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple", "StrategyNegative"], function (Board, Cell, StrategyFactory, StrategySimple, StrategyNegative) {
 
     QUnit.module("Cell");
 
@@ -151,7 +151,7 @@ requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple"], function (Boar
         ]);
     });
 
-    QUnit.module("SimpleStrategy");
+    QUnit.module("StrategySimple");
 
     QUnit.test("find neighbour cells color occurrences", function (assert) {
         var colors = [1, 2, 1, 3, 2, 1, 2, 4, 2];
@@ -196,6 +196,51 @@ requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple"], function (Boar
         assert.equal(colorWithMaxOccurrence, 1);
     });
 
+    QUnit.module("StrategyNegative");
+
+    QUnit.test("find neighbour cells color occurrences", function (assert) {
+        var colors = [1, 2, 1, 3, 2, 1, 2, 4, 2];
+        var strategy = new StrategyNegative();
+
+        var occurrences = strategy.getNeighboursColorOccurrences(colors);
+
+        assert.deepEqual([
+            {color: 1, occurrence: 3},
+            {color: 2, occurrence: 4},
+            {color: 3, occurrence: 1},
+            {color: 4, occurrence: 1}
+        ], occurrences);
+
+    });
+
+    QUnit.test("find min color occurrence", function (assert) {
+        var colorOccurrences = [
+            {color: 1, occurrence: 3},
+            {color: 2, occurrence: 4},
+            {color: 3, occurrence: 1},
+            {color: 4, occurrence: 5}
+        ];
+
+        var strategy = new StrategyNegative();
+        var colorWithMinOccurrence = strategy.getColorMinOccurrence(colorOccurrences);
+
+        assert.equal(colorWithMinOccurrence, 3);
+    });
+
+    QUnit.test("find min color occurrence when several colors have the same number of occurrences", function (assert) {
+        var colorOccurrences = [
+            {color: 1, occurrence: 3},
+            {color: 2, occurrence: 2},
+            {color: 3, occurrence: 1},
+            {color: 4, occurrence: 1}
+        ];
+
+        var strategy = new StrategyNegative();
+        var colorWithMinOccurrence = strategy.getColorMinOccurrence(colorOccurrences);
+
+        assert.equal(colorWithMinOccurrence, 3);
+    });
+
     QUnit.test("3x3, steps according to simple strategy", function (assert) {
         var initialData = [
             1, 2, 3,
@@ -204,7 +249,7 @@ requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple"], function (Boar
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = StrategyFactory.createStratgy(board, initialCoords);
+        var strategy = StrategyFactory.createStrategy(board, initialCoords);
 
         assert.equal(strategy.getStepNumber(), 0);
 
@@ -252,7 +297,7 @@ requirejs(["Board", "Cell", "StrategyFactory", "StrategySimple"], function (Boar
 
         var initialCoords = {x: 0, y: 0};
         var board = new Board(initialData);
-        var strategy = StrategyFactory.createStratgy(board, initialCoords);
+        var strategy = StrategyFactory.createStrategy(board, initialCoords);
 
         var stepResult;
 

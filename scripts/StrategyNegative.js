@@ -4,7 +4,7 @@
 
 define(["StrategyBase"], function (StrategyBase) {
 
-    function StrategySimple() {
+    function StrategyNegative() {
         var self = this;
 
         self.nextStep = function () {
@@ -60,33 +60,33 @@ define(["StrategyBase"], function (StrategyBase) {
             return occurrences;
         };
 
-        self.getColorMaxOccurrence = function (occurrences) {
-            var mostPopularColor = null;
-            var maxOccurrence = 0;
+        self.getColorMinOccurrence = function (occurrences) {
+            var mostUnpopularColor = null;
+            var minOccurrence = Number.MAX_VALUE;
             for (var i = 0; i < occurrences.length; i++) {
 
                 var colorOccurrence = occurrences[i];
-                if (maxOccurrence < colorOccurrence.occurrence) {
-                    mostPopularColor = colorOccurrence.color;
-                    maxOccurrence = colorOccurrence.occurrence;
+                if (minOccurrence > colorOccurrence.occurrence) {
+                    mostUnpopularColor = colorOccurrence.color;
+                    minOccurrence = colorOccurrence.occurrence;
                 }
-                else if (maxOccurrence == colorOccurrence.occurrence) {
-                    if (colorOccurrence.color < mostPopularColor) {
-                        mostPopularColor = colorOccurrence.color;
+                else if (minOccurrence == colorOccurrence.occurrence) {
+                    if (colorOccurrence.color < mostUnpopularColor) {
+                        mostUnpopularColor = colorOccurrence.color;
                     }
                 }
             }
-            return mostPopularColor;
+            return mostUnpopularColor;
         };
 
 
         self.getNextColor = function (colorsToChoose) {
             var occurrences = self.getNeighboursColorOccurrences(colorsToChoose);
-            return self.getColorMaxOccurrence(occurrences);
+            return self.getColorMinOccurrence(occurrences);
         }
     }
 
-    StrategySimple.prototype = new StrategyBase();
+    StrategyNegative.prototype = new StrategyBase();
 
-    return StrategySimple;
+    return StrategyNegative;
 });
