@@ -7,28 +7,33 @@ define(["StrategyBase"], function (StrategyBase) {
     function StrategyNegative() {
         var self = this;
 
-        self.nextStep = function () {
-            var neighboursCoords = self.board.getDifferentNeighboursAndMarkArea(self.initialCoords.x, self.initialCoords.y);
-
-            if (!neighboursCoords || neighboursCoords.length === 0)
-                return false;
-
+        self.getNeighboursColors = function (neighboursCoords) {
             var neighbourColors = [];
             neighboursCoords.forEach(function (item) {
                 var cell = self.board.getCellByCoords(item.x, item.y);
                 neighbourColors.push(cell.getColor());
             });
 
-            var nextColor = self.getNextColor(neighbourColors);
+            return neighbourColors;
+        };
 
+        self.changeCellsColor = function (nextColor) {
             self.board.forEach(function (cell) {
                 if (cell.getMark() && cell.getColor() !== nextColor) {
                     cell.setColor(nextColor);
                 }
             });
+        };
+
+        self.nextStep = function () {
+            var neighboursCoords = self.board.getDifferentNeighboursAndMarkArea(self.initialCoords.x, self.initialCoords.y);
+
+            if (!neighboursCoords || neighboursCoords.length === 0)
+                return false;
+            
+            self.changeCellsColor(self.getNextColor(self.getNeighboursColors(neighboursCoords)));
 
             self.board.resetMarkedCells();
-
             self.stepForward();
 
             return true;
