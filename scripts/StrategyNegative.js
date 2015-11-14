@@ -30,7 +30,7 @@ define(["StrategyBase"], function (StrategyBase) {
 
             if (!neighboursCoords || neighboursCoords.length === 0)
                 return false;
-            
+
             self.changeCellsColor(self.getNextColor(self.getNeighboursColors(neighboursCoords)));
 
             self.board.resetMarkedCells();
