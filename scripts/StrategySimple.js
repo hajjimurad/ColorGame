@@ -51,7 +51,7 @@ define(["StrategyBase"], function (StrategyBase) {
 
                 var indexOfOccurrence = getIndexOfCalculatedColor(occurrences, color);
                 if (indexOfOccurrence === null) {
-                    occurrences.push({color: color, occurrence: 1})
+                    occurrences.push({ color: color, occurrence: 1 })
                 }
                 else {
                     occurrences[indexOfOccurrence].occurrence = occurrences[indexOfOccurrence].occurrence + 1;
