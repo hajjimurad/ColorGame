@@ -6,19 +6,8 @@ define(["Cell"], function (Cell) {
 
     function Board(initialData) {
 
-        var self = this;
-
-        self.size = 0;
-        var cells = [];
-
-        var init = function (data) {
-            for (var i = 0; i < self.size; i++) {
-                cells[i] = new Array(self.size);
-                for (var j = 0; j < self.size; j++) {
-                    cells[i][j] = new Cell(data[i * self.size + j]);
-                }
-            }
-        };
+        this.size = 0;
+        this.cells = [];
 
         if (initialData) {
             if (initialData.constructor !== Array)
@@ -29,47 +18,55 @@ define(["Cell"], function (Cell) {
                     throw "invalid initial data";
                 }
                 else {
-                    self.size = calculatedSize;
+                    this.size = calculatedSize;
                 }
             }
 
-            init(initialData);
+            this.init(initialData);
 
         } else {
             throw "no initial data";
         }
+    }
 
-        self.getCellByCoords = function (i, j) {
-            return cells[i][j];
-        };
-
-        self.forEach = function (callback) {
-            for (var i = 0; i < self.size; i++)
-                for (var j = 0; j < self.size; j++) {
+    Board.prototype = {
+        constructor: Board,
+        init: function (data) {
+            for (var i = 0; i < this.size; i++) {
+                this.cells[i] = new Array(this.size);
+                for (var j = 0; j < this.size; j++) {
+                    this.cells[i][j] = new Cell(data[i * this.size + j]);
+                }
+            }
+        },
+        getCellByCoords: function (i, j) {
+            return this.cells[i][j];
+        },
+        forEach: function (callback) {
+            for (var i = 0; i < this.size; i++)
+                for (var j = 0; j < this.size; j++) {
                     var cell = this.getCellByCoords(i, j);
                     callback(cell, i, j);
                 }
-        };
-
-        self.getCells = function () {
+        },
+        getCells: function () {
             var result = [];
-            self.forEach(function (cell) {
+
+            this.forEach(function (cell) {
                 result.push(cell);
             });
 
             return result;
-        };
-
-        self.getCellsColors = function () {
+        },
+        getCellsColors: function () {
             var resultColors = [];
-            self.forEach(function (cell) {
+            this.forEach(function (cell) {
                 resultColors.push(cell.getColor());
             });
 
             return resultColors;
-        };
-
-        self.getMarkedCellsCoords = function () {
+        },
+        getMarkedCellsCoords: function () {
             var markedCellsCoords = [];
             this.forEach(function (cell, i, j) {
                 if (cell.getMark()) {
@@ -78,15 +75,13 @@ define(["Cell"], function (Cell) {
             });
 
             return markedCellsCoords;
-        };
-
-        self.resetMarkedCells = function () {
-            self.forEach(function (cell) {
+        },
+        resetMarkedCells: function () {
+            this.forEach(function (cell) {
                 cell.setMark(false);
             });
-        };
-
-        self.getNeighboursPositions = function (i, j) {
+        },
+        getNeighboursPositions: function (i, j) {
 
             var positionsRaw = [
                 {x: i - 1, y: j},
@@ -96,6 +91,8 @@ define(["Cell"], function (Cell) {
             ];
 
             var resultPositions = [];
+
+            var self = this;
             positionsRaw.forEach(function (element) {
                 var position = element;
                 if (position.x < 0 || position.x >= self.size)
@@ -108,31 +105,32 @@ define(["Cell"], function (Cell) {
             });
 
             return resultPositions;
-        };
-
-        self.getDifferentNeighboursAndMarkArea = function (i, j) {
+        },
+        getDifferentNeighboursAndMarkArea: function (i, j) {
             var resultCoords = [];
 
-            cells[i][j].setMark(true);
+            this.cells[i][j].setMark(true);
 
-            doGetDifferentCells(i, j, resultCoords);
+            this.doGetDifferentCells(i, j, resultCoords);
 
+            var self = this;
             resultCoords.forEach(function (item) {
                 var cell = self.getCellByCoords(item.x, item.y);
                 cell.setMark(false);
             });
 
             return resultCoords;
-        };
+        },
+        doGetDifferentCells: function (i, j, resultCollection) {
 
-        var doGetDifferentCells = function (i, j, resultCollection) {
+            var currentCellColor = this.cells[i][j].getColor();
 
-            var currentCellColor = cells[i][j].getColor();
+            var neighbours = this.getNeighboursPositions(i, j);
 
-            var neighbours = self.getNeighboursPositions(i, j);
+            var self = this;
             neighbours.forEach(function (coords) {
 
-                var cell = cells[coords.x][coords.y];
+                var cell = self.cells[coords.x][coords.y];
 
                 if (cell.getMark())
                     return;
@@ -143,11 +141,11 @@ define(["Cell"], function (Cell) {
                     resultCollection.push(coords);
                 }
                 else {
-                    doGetDifferentCells(coords.x, coords.y, resultCollection);
+                    self.doGetDifferentCells(coords.x, coords.y, resultCollection);
                 }
             });
-        };
-    }
+        }
+    };
 
     return Board;
 });
