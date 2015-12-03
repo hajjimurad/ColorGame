@@ -5,28 +5,31 @@
 define(function () {
 
     function Cell(colorIndex) {
-
-        var _colorIndex;
-        var _mark = false;
-
-        this.setMark = function (mark) {
-            _mark = mark;
-        };
-
-        this.getMark = function () {
-            return _mark;
-        };
-
-        this.setColor = function (colorIndex) {
-            _colorIndex = colorIndex;
-        };
-
-        this.getColor = function () {
-            return _colorIndex;
-        };
+        this._mark = false;
+        this._colorIndex = 0;
 
         this.setColor(colorIndex);
     }
+
+    Cell.prototype = {
+        constructor: Cell,
+        setMark: function (mark) {
+            this._mark = mark;
+        },
+
+        getMark: function () {
+            return this._mark;
+        },
+
+        setColor: function (colorIndex) {
+            this._colorIndex = colorIndex;
+        },
+
+        getColor: function () {
+            return this._colorIndex;
+        }
+    }
+
 
     return Cell;
 });
